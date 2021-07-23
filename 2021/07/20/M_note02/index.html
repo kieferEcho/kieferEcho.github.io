@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
+     <link rel="shortcut icon" href= /img/favicon.ico >
+    <title>
+        Hexo
+    </title>
+    <meta name="description" content= wellcome to my channel >
+    <meta name="keywords" content= Blog,Hexo,Theme,kiefer-cc >
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <hr>
+<h2 id="title-模糊聚类的综合分析"><a href="#title-模糊聚类的综合分析" class="headerlink" title="title:模糊聚类的综合分析"></a>title:模糊聚类的综合分析</h2><h3 id="1-什么是聚类分析综合评判？"><a href="#1-什么是聚类分析综合评判？" class="headerlink" title="1.什么是聚类分析综合评判？"></a>1.什么是聚类分析综合评判？</h3><blockquote>
+<p>关键字：</p>
+<ol>
+<li><p>因素集合</p>
+<ul>
+<li>与评价事物相关的因素的集合</li>
+</ul>
+</li>
+<li><p>评判集</p>
+<ul>
+<li>对单一因素的评判的集合</li>
+</ul>
+</li>
+<li><p>评判权重</p>
+<ul>
+<li>我们心中预先判断的评判集合中的占比</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="2-自我的理解"><a href="#2-自我的理解" class="headerlink" title="2.自我的理解"></a>2.自我的理解</h3><blockquote>
+<ul>
+<li>假设有m个因子，有n个评价指标,一个评判占比集合w （和为1）,一个待处理的数据集合A[n]，一个结果集result.</li>
+</ul>
+</blockquote>
+<hr>
+<h4 id="2-1-描述"><a href="#2-1-描述" class="headerlink" title="2.1 描述"></a>2.1 描述</h4><blockquote>
+<ul>
+<li><p>聚类分析的综合评价就是把给定数据中的每个因子按照标准的指标数据（m<em>n)的矩阵，通过隶属函数（不同适用性）对1~m个因子分别进行评判得到m个一维的评判向量占比1</em>n矩阵（sum和为1）,即最终的评判矩阵m*n的每一行sum都为1</p>
+</li>
+<li><p> 姑且我们把上面的处理叫做行处理‘’，现在我们进行“列处理”，所谓的列处理，想必说到这里大概也能猜到了，我们注重的是我们要处理的数据A的评判占比，而这里我们就用上了w集合了，通过w和矩阵的合取（最小_最大法）和归一化处理，即得到的result[n]中的数据分别对应这判断指标影响的程度。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="2-2-案例"><a href="#2-2-案例" class="headerlink" title="2.2 案例"></a>2.2 案例</h4><blockquote>
+<p>我们对进行如我们下面案例中要提到的空气污染问题：<br>    - 空气污染有很多问题因子，如硫化物，氮化物，PM颗粒等…<br>    - 对于每个污染物，我们可以分为1~n级的指标（即严重程度）…<br>    - 最终我们的要求则是：给定的实际污染数据中，那个指标影响最大…（当前空气污染主要由哪个等级的污染物所影响）</p>
+</blockquote>
+<p><img src="C:\Users\86182\AppData\Roaming\Typora\typora-user-images\image-20210723085042804.png" alt="image-20210723085042804"></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%大气的模糊质量的模糊综合评价</span></span><br><span class="line">A=[<span class="number">0.05</span>,<span class="number">0.15</span>,<span class="number">0.25</span>,<span class="number">0.50</span>;</span><br><span class="line">    <span class="number">0.12</span>,<span class="number">0.30</span>,<span class="number">0.50</span>,<span class="number">1.00</span>;</span><br><span class="line">    <span class="number">0.1</span>,<span class="number">0.1</span>,<span class="number">0.15</span>,<span class="number">0.30</span>;</span><br><span class="line">    <span class="number">4.0</span>,<span class="number">4.0</span>,<span class="number">6.0</span>,<span class="number">10.0</span>;</span><br><span class="line">    <span class="number">0.05</span>,<span class="number">0.15</span>,<span class="number">0.25</span>,<span class="number">0.50</span>;</span><br><span class="line">    <span class="number">0.12</span>,<span class="number">0.16</span>,<span class="number">0.20</span>,<span class="number">0.40</span>];</span><br><span class="line"><span class="comment">%1.权重的层次分析（最后每个数据的指标占比度,标准且固定的数据）</span></span><br><span class="line">weigth=[<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.3</span>,<span class="number">0.05</span>,<span class="number">0.05</span>];</span><br><span class="line"><span class="comment">%2.某地的对应因子的信息</span></span><br><span class="line"><span class="built_in">inf</span>=[<span class="number">0.07</span>,<span class="number">0.2</span>,<span class="number">0.123</span>,<span class="number">5</span>,<span class="number">0.08</span>,<span class="number">0.14</span>];</span><br><span class="line"><span class="comment">%3.求解</span></span><br><span class="line">result=fun_nishu(A,<span class="built_in">inf</span>,weigth);</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\86182\AppData\Roaming\Typora\typora-user-images\image-20210723085433730.png" alt="image-20210723085433730"></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">w</span>= <span class="title">fun_nishu</span><span class="params">(matrix,info,weight )</span></span></span><br><span class="line"><span class="comment">%此处显示详细说明</span></span><br><span class="line">r=<span class="built_in">size</span>(matrix,<span class="number">1</span>);<span class="comment">%6</span></span><br><span class="line">c=<span class="built_in">size</span>(matrix,<span class="number">2</span>);<span class="comment">%4</span></span><br><span class="line">p=<span class="built_in">zeros</span>(r,c);</span><br><span class="line">a=matrix;</span><br><span class="line">T=info;<span class="comment">%处理的信息</span></span><br><span class="line">  <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:r</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:c</span><br><span class="line">    temp=a(<span class="built_in">i</span>,:);<span class="comment">%对应的指标数据</span></span><br><span class="line">        <span class="keyword">switch</span> <span class="built_in">j</span>  <span class="comment">%这里我们对应四个评判指标的隶属函数</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> T(<span class="built_in">i</span>)&lt;=temp(<span class="number">1</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">elseif</span> temp(<span class="number">2</span>)&lt;=T(<span class="built_in">i</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=(temp(<span class="number">2</span>)-T(<span class="built_in">i</span>))/(temp(<span class="number">2</span>)-temp(<span class="number">1</span>));</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span></span><br><span class="line">                <span class="keyword">if</span> T(<span class="built_in">i</span>)&gt;temp(<span class="number">1</span>)&amp;&amp;T(<span class="built_in">i</span>)&lt;temp(<span class="number">2</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=(T(<span class="built_in">i</span>)-temp(<span class="number">1</span>))/(temp(<span class="number">2</span>)-temp(<span class="number">1</span>));</span><br><span class="line">                <span class="keyword">elseif</span> temp(<span class="number">2</span>)&lt;T(<span class="built_in">i</span>)&amp;&amp;T(<span class="built_in">i</span>)&lt;temp(<span class="number">3</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=(temp(<span class="number">3</span>)-T(<span class="built_in">i</span>))/(temp(<span class="number">3</span>)-temp(<span class="number">2</span>));</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span></span><br><span class="line">                <span class="keyword">if</span>  temp(<span class="number">2</span>)&lt;T(<span class="built_in">i</span>)&amp;&amp;T(<span class="built_in">i</span>)&lt;temp(<span class="number">3</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=(T(<span class="built_in">i</span>)-temp(<span class="number">2</span>))/(temp(<span class="number">3</span>)-temp(<span class="number">2</span>));</span><br><span class="line">                <span class="keyword">elseif</span> temp(<span class="number">3</span>)&lt;T(<span class="built_in">i</span>)&amp;&amp;T(<span class="built_in">i</span>)&lt;temp(<span class="number">4</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=(temp(<span class="number">4</span>)-T(<span class="built_in">i</span>))/(temp(<span class="number">4</span>)-temp(<span class="number">3</span>));</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span></span><br><span class="line">                <span class="keyword">if</span> temp(<span class="number">3</span>)&lt;T(<span class="built_in">i</span>)&amp;&amp;T(<span class="built_in">i</span>)&lt;temp(<span class="number">4</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=(T(<span class="built_in">i</span>)-temp(<span class="number">3</span>))/(temp(<span class="number">4</span>)-temp(<span class="number">3</span>));</span><br><span class="line">                <span class="keyword">elseif</span> T(<span class="built_in">i</span>)&gt;=temp(<span class="number">4</span>)</span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    p(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="number">0</span>;</span><br><span class="line">                <span class="keyword">end</span>  </span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">   D=p;</span><br><span class="line">  <span class="built_in">disp</span>(D)</span><br><span class="line">  <span class="comment">%合取（取大_取小）</span></span><br><span class="line">  weight=weight&#x27;;</span><br><span class="line">  <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:c</span><br><span class="line">  	result(<span class="built_in">i</span>)=<span class="built_in">max</span>(<span class="built_in">min</span>(weigth,p(:,<span class="built_in">i</span>)));</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"> <span class="keyword">if</span> sum(result)~=<span class="number">1</span> <span class="comment">%占比和我们归一化</span></span><br><span class="line"> 	result=result./(sum(result));</span><br><span class="line"> 	<span class="keyword">end</span></span><br><span class="line"> 	</span><br><span class="line"> 	w=result;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\86182\AppData\Roaming\Typora\typora-user-images\image-20210723085806825.png" alt="image-20210723085806825"></p>
+<hr>
+<ul>
+<li>通过上述的操作，我们得到了result结果集,其中看以看到，整个我分们分析的数据中，2级污染物影响最大。（PS:<span style="color:red" >图片结果集数据有误</span>，这里只是举例说明）</li>
+</ul>
+<p>[^声明：]文章内容均博主本人学习之时所作笔记，不可随意转载，仅当参考学习。</p>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <p><h4>Copyright © 2020 | Author: kiefer-cc | Theme By <a class="theme-author" target="_blank" rel="noopener" href="https://github.com/Xunzhuo/hexo-theme-coder" style="font-size:14px; color: #969696">Coder</a></h4>
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <span id="busuanzi_container_site_pv">Page Views: <span id="busuanzi_value_site_pv"></span></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">Unique Visitors: <span id="busuanzi_value_site_uv"></span></span>
+    
+    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
+        <input type="checkbox" name="switch" id="update_style">
+        <span class="el-switch-style"></span>
+    </label>
+
+    <!--         <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script> -->
+</p>
+</div>
+
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="NOsswOncKgc8HOxqo9oxIWlX-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="z1FihjWEbS8uIfUQdmCtK7zz">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+color: #698fca;
+}
+.v .vlist .vcard .vhead .vsys {
+color: #3a3e4a;
+}
+.v .vlist .vcard .vh .vmeta .vat {
+color: #638fd5;
+}
+.v .vlist .vcard .vhead .vnick {
+color: #6ba1ff;
+}
+.v a {
+color: #8696b1;
+}
+.v .vlist .vcard .vhead .vnick:hover {
+color: #669bfc;
+}
+</style>
+    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>
